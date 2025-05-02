@@ -15,7 +15,7 @@ transactions = [
 # Read operation: read all transactions
 @app.route('/')
 def get_transactions():
-    return render_template('index.html', transactions=transactions)
+    return render_template('transactions.html', transactions=transactions)
 
 # Create operation: Display add transaction form
 # Route to handle the creation of a new transaction
