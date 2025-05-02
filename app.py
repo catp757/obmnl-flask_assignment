@@ -80,7 +80,45 @@ def delete_transaction(transaction_id):
     # Redirect to the transactions list page after deleting the transaction
     return redirect(url_for("get_transactions"))
 
+# Search operation: Display transactions searched given a min and max amount
+# Route to handle the search functionality
+@app.route("/search", methods=["GET", "POST"])
+def search_transactions():
+    # Check if the request method is POST (form submission)
+    if request.method == 'POST':
+        
+        # Extract the search criteria from the form fields
+        min_amount = float(request.form['min_amount'])
+        max_amount = float(request.form['max_amount'])
+
+        filtered_transactions = []  # Initialize an empty list to store filtered transactions
+        for transaction in transactions:
+            # Check if the transaction amount is within the specified range
+            if min_amount <= transaction['amount'] <= max_amount:
+                filtered_transactions.append(transaction)
+
+        # Render the search results template and pass the matching transactions
+        if filtered_transactions:
+            # If there are matching transactions, render the search results template with the filtered transactions
+            return render_template("index.html", transactions=filtered_transactions)
+        else:
+            # If no transactions match the search criteria, render the search results template with an empty list
+            return render_template("index.html", transactions=[])
+            
+    return render_template("search.html")
+
+# Route to handle the balance calculation
+# This route is used to calculate and display the total balance of all transactions
+@app.route("/balance")
+def get_balance():
+    # Calculate the total balance by summing the amounts of all transactions
+    total_bal= sum(transaction['amount'] for transaction in transactions)
+    
+    # Render the transactions and the total balance
+    return render_template("index.html", transactions=transactions, total_balance=total_bal)
+
 # Run the Flask app
-    # Run the Flask app
+# This block checks if the script is being run directly (not imported as a module)
+# and starts the Flask development server with debug mode enabled.
 if __name__ == "__main__":
     app.run(debug=True)

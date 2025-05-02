@@ -65,7 +65,9 @@
                 {% endfor %}
             </tbody>
         </table>
-
+        {% if total_balance %}
+          <div>Total Balance: ${{ total_balance }}</div>
+        {% endif %}
         <div class="d-flex justify-content-center">
             <a class="btn btn-success" href="{{ url_for('add_transaction') }}">Add Transaction</a>
         </div>
